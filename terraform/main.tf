@@ -111,7 +111,7 @@ resource "local_file" "server_env" {
 
 resource "local_file" "client_env" {
   filename = "../packages/client/.env"
-  content = "SERVER_URL=http://localhost:3000/"
+  content = "SERVER_URL=https://nickperlich.github.io/potions/"
   file_permission = "0600"
 }
 
