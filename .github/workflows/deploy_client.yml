@@ -1,0 +1,45 @@
+name: Build and Deploy Client
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build:
+    name: Build Client
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Use the version your project requires
+
+      # Step 3: Install PNPM
+      - name: Install PNPM
+        run: |
+          npm install -g pnpm
+
+      # Step 4: Install dependencies
+      - name: Install Dependencies
+        run: |
+          pnpm install
+
+      # Step 5: Build the client
+      - name: Build Client
+        run: |
+          pnpm build
+
+      # Step 6: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./packages/client/dist  # Correct path based on Webpack output
