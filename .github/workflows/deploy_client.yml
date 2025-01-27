@@ -10,7 +10,6 @@ jobs:
   build:
     name: Build Client
     runs-on: ubuntu-latest
-
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Code
@@ -37,9 +36,16 @@ jobs:
         run: |
           pnpm build
 
-      # Step 6: Deploy to GitHub Pages
+
+      # Step 6: Move Static Files to Dist
+      - name: Copy Static Files
+        run: |
+          cp -r ./packages/client/static ./packages/client/dist/static
+          cp -r ./packages/client/githubPages/index.html ./packages/client/dist
+
+      # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./packages/client/dist  
+            publish_dir: ./packages/client/dist
